@@ -56,14 +56,19 @@ casos_max_argentina_con_seleccionado=[]
 for i in range(2):
     casos_max_argentina_con_seleccionado.append(paises_argentina_con_seleccionado[i][-1])
 
+
+
 st.header(f"Comparación de Argentina con {option}")
 data = pd.DataFrame({
     'Paises': ['Argentina', option],
     'Casos Max Confirmados Por Paises ': casos_max_argentina_con_seleccionado
 ,
 })
+st.title("")
 
 st.write(data)
+st.title("")
+
 st.write(alt.Chart(data).mark_bar().encode(
     x=alt.X('Paises', sort=None),
     y='Casos Max Confirmados Por Paises ',
@@ -84,8 +89,11 @@ for i in range(6):
 #casos_max_por_paises
 
 
+st.title("")
 
 st.header("Comparación de varios países con argentina")
+st.title("")
+
 data = pd.DataFrame({
     'Paises': ['Rusia', 'Argentina', 'Canadá',"Vietnam","Yemen","México"],
     'Casos Max Confirmados Por Paises ': casos_max_por_paises
@@ -100,3 +108,4 @@ st.write(alt.Chart(data).mark_bar().encode(
 
 
 st.write("Creado por Pértile Franco Giuliano")
+st.markdown("https://github.com/francofgp/streamlit-Casos-Covid-19-Argentina")
