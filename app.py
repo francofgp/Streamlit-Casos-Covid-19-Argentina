@@ -7,8 +7,7 @@ import numpy as np
 
 
 
-
-st.title("Comparación de casos confirmados de Covid-19 de Argentina")
+st.title("Comparación de casos confirmados de Covid-19 en Argentina")
 
 st.title("")
 option = st.selectbox(
@@ -59,13 +58,33 @@ for i in range(2):
 
 
 st.header(f"Comparación de Argentina con {option}")
+st.markdown("Acumulación de contagios desde el dia Cero")
 data = pd.DataFrame({
     'Paises': ['Argentina', option],
     'Casos Max Confirmados Por Paises ': casos_max_argentina_con_seleccionado
 ,
 })
-st.title("")
 
+#st.write(x_pais_seleccionado)
+
+df = pd.DataFrame({
+  'Argentina': x_arg,
+  option: x_pais_seleccionado
+})
+
+
+st.line_chart(df)
+
+
+#data1=pd.DataFrame(data1).transpose()
+#data1 = data1.set_axis(['Rusia', 'Argentina', 'Canadá',"Vietnam","Yemen","México"], axis=1, inplace=False)
+
+#data1.index.names = ['dias']
+
+
+
+
+st.title("")
 st.write(data)
 st.title("")
 
@@ -81,6 +100,7 @@ paises = np.vstack((paises,x_canada))
 paises = np.vstack((paises,x_vietnam))
 paises = np.vstack((paises,x_yemen))
 paises = np.vstack((paises,x_mexico))
+data1=paises
 
 casos_max_por_paises=[]
 for i in range(6):
@@ -92,7 +112,6 @@ for i in range(6):
 st.title("")
 
 st.header("Comparación de varios países con argentina")
-st.title("")
 
 data = pd.DataFrame({
     'Paises': ['Rusia', 'Argentina', 'Canadá',"Vietnam","Yemen","México"],
@@ -107,5 +126,53 @@ st.write(alt.Chart(data).mark_bar().encode(
 ).properties(width=700, height=500))
 
 
-st.write("Creado por Pértile Franco Giuliano")
-st.markdown("https://github.com/francofgp/streamlit-Casos-Covid-19-Argentina")
+st.title("")
+
+st.header("Comparación de varios países elegidos")
+
+COUNTRIES = ['Argentina','Russia',"US", 'Canada',"Bolivia","Brazil","Ecuador","Italy","Israel","Jamaica","India", 'Vietnam',"Yemen","Mexico","Angola","Armenia","Iran","Iraq","Indonesia","Saudi Arabia","Tanzania","Togo"]
+COUNTRIES_SELECTED = st.multiselect('Selecciones los países a comparar (Mínimo dos)', COUNTRIES)
+
+covid_df2 = pd.read_csv(data_url2)
+#COUNTRIES_SELECTED.append("Argentina")
+lista_paises_seleccionados = None
+
+for pais in COUNTRIES_SELECTED:
+    df_pais = covid_df2[covid_df2['Country/Region'].str.contains(pais, case=True)]
+    x_pais = df_pais.iloc[0:1, 6:].values
+    x_pais= x_pais[0]
+    if lista_paises_seleccionados is None:
+        lista_paises_seleccionados=x_pais
+    else:
+        lista_paises_seleccionados = np.vstack((lista_paises_seleccionados,x_pais))
+
+
+    
+if len(COUNTRIES_SELECTED)>=2:
+
+    casos_max_por_paises=[]
+    for i in range(len(COUNTRIES_SELECTED)):
+        casos_max_por_paises.append(lista_paises_seleccionados[i][-1])
+        
+
+
+    data = pd.DataFrame({
+        'Paises': COUNTRIES_SELECTED,
+        'Casos Max Confirmados Por Paises ': casos_max_por_paises
+    ,
+    })
+    print(casos_max_por_paises)
+
+    st.write(data)
+    st.write(alt.Chart(data).mark_bar().encode(
+        x=alt.X('Paises', sort=None),
+        y='Casos Max Confirmados Por Paises ',
+    ).properties(width=700, height=500))
+
+
+
+    st.write("Creado por Pértile Franco Giuliano")
+    st.markdown("https://github.com/francofgp/streamlit-Casos-Covid-19-Argentina")
+
+
+ 
