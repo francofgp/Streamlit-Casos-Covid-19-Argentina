@@ -7,7 +7,7 @@ import numpy as np
 
 
 
-st.title("Comparación de casos confirmados de Covid-19 en Argentina")
+st.title("Comparación de casos acumulados de Covid-19 en Argentina")
 
 
 
