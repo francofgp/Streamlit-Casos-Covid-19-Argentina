@@ -146,17 +146,18 @@ st.title("")
 
 st.header("Comparación de varios países elegidos")
 
-COUNTRIES = ['Argentina','Russia',"US", 'Canada',"Bolivia","Brazil","Ecuador","Italy","Israel","Jamaica","India", 'Vietnam',"Yemen","Mexico","Angola","Armenia","Iran","Iraq","Indonesia","Saudi Arabia","Tanzania","Togo"]
+COUNTRIES = lista_de_paises_df
 COUNTRIES_SELECTED = st.multiselect('Selecciones los países a comparar (Mínimo dos)', COUNTRIES)
 
-covid_df2 = pd.read_csv(data_url2)
+#covid_df2 = pd.read_csv(data_url2)
 #COUNTRIES_SELECTED.append("Argentina")
 lista_paises_seleccionados = None
 
 for pais in COUNTRIES_SELECTED:
-    df_pais = covid_df2[covid_df2['Country/Region'].str.contains(pais, case=True)]
-    x_pais = df_pais.iloc[0:1, 6:].values
-    x_pais= x_pais[0]
+    x_pais = covid_df2.loc[ pais , : ]
+    x_pais= x_pais[2:]
+    #x_pais = df_pais.iloc[0:1, 6:].values
+    #x_pais= x_pais[0]
     if lista_paises_seleccionados is None:
         lista_paises_seleccionados=x_pais
     else:
