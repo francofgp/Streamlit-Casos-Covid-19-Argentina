@@ -73,7 +73,9 @@ for i in range(2):
 
 
 st.header(f"Comparación de Argentina con {option}")
-st.markdown("Acumulación de contagios desde el dia Cero")
+st.markdown("Acumulación de contagios desde el dia 22/01/20 hasta el presente ")
+st.markdown("El gráfico representa días transcurridos/cantidad de contagios acumulados")
+
 data = pd.DataFrame({
     'Paises': ['Argentina', option],
     'Casos Max Confirmados Por Paises ': casos_max_argentina_con_seleccionado
@@ -101,8 +103,12 @@ st.line_chart(df)
 
 
 st.title("")
+st.markdown("Información de los países")
+
 st.write(data)
 st.title("")
+st.markdown(f"Total de contagios acumulados de Argentina y {option} desde el dia 22/01/20 hasta el presente")
+
 
 st.write(alt.Chart(data).mark_bar().encode(
     x=alt.X('Paises', sort=None),
@@ -135,7 +141,10 @@ data = pd.DataFrame({
 ,
 })
 
+st.write("Información de los países")
 st.write(data)
+st.markdown("Total de contagios acumulados por país desde el dia 22/01/20 hasta el presente ")
+
 st.write(alt.Chart(data).mark_bar().encode(
     x=alt.X('Paises', sort=None),
     y='Casos Max Confirmados Por Paises ',
@@ -166,7 +175,7 @@ for pais in COUNTRIES_SELECTED:
 
     
 if len(COUNTRIES_SELECTED)>=2:
-
+    
     casos_max_por_paises=[]
     for i in range(len(COUNTRIES_SELECTED)):
         casos_max_por_paises.append(lista_paises_seleccionados[i][-1])
@@ -178,12 +187,23 @@ if len(COUNTRIES_SELECTED)>=2:
         'Casos Max Confirmados Por Paises ': casos_max_por_paises
     ,
     })
-
+    st.markdown("Información de los países seleccionados")
     st.write(data)
+    st.markdown("Total de contagios acumulados por país desde el dia 22/01/20 hasta el presente ")
     st.write(alt.Chart(data).mark_bar().encode(
         x=alt.X('Paises', sort=None),
         y='Casos Max Confirmados Por Paises ',
     ).properties(width=700, height=500))
+
+
+    st.markdown("Contagios acumulados de Covid-19  desde el dia 22/01/20 hasta el presente ")
+    st.markdown("El gráfico representa días transcurridos/cantidad de contagios acumulados")
+
+    chart_data = pd.DataFrame(
+        lista_paises_seleccionados.transpose(),
+        columns=COUNTRIES_SELECTED)
+
+    st.line_chart(chart_data)
 
 
 
