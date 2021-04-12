@@ -9,45 +9,60 @@ import numpy as np
 
 st.title("Comparación de casos confirmados de Covid-19 en Argentina")
 
-st.title("")
-option = st.selectbox(
-     'Seleccione un pais a comparar con Argentina?',
-    ('Russia',"US", 'Canada',"Bolivia","Brazil","Ecuador","Italy","Israel","Jamaica","India", 'Vietnam',"Yemen","Mexico","Angola","Armenia","Iran","Iraq","Indonesia","Saudi Arabia","Tanzania","Togo"))
 
-st.write('Seleccionaste:', option)
 
 
 data_url2= 'https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv'
 covid_df2 = pd.read_csv(data_url2)
-df_arg = covid_df2[covid_df2['Country/Region'].str.contains("Argentina", case=True)]
-df_rusia =covid_df2[covid_df2['Country/Region'].str.contains("Russia", case=True)]
-df_canada =covid_df2[covid_df2['Country/Region'].str.contains("Canada", case=True)]
-df_vietnam =covid_df2[covid_df2['Country/Region'].str.contains("Vietnam", case=True)]
-df_yemen =covid_df2[covid_df2['Country/Region'].str.contains("Yemen", case=True)]
-df_mexico =covid_df2[covid_df2['Country/Region'].str.contains("Mexico", case=True)]
+covid_df2= covid_df2.groupby("Country/Region").sum()
+lista_de_paises_df =covid_df2.index.values.tolist()
 
-df_pais_seleccionado=covid_df2[covid_df2['Country/Region'].str.contains(option, case=True)]
+st.title("")
+option = st.selectbox(
+     'Seleccione un pais a comparar con Argentina?',
+    lista_de_paises_df)
 
-x_arg = df_arg.iloc[0:1, 6:].values
-x_arg= x_arg[0]
+st.write('Seleccionaste:', option)
 
-x_rusia = df_rusia.iloc[0:1, 6:].values
-x_rusia= x_rusia[0]
 
-x_canada = df_canada.iloc[0:1, 6:].values
-x_canada= x_canada[0]
+x_arg=covid_df2.loc[ 'Argentina' , : ]
+x_rusia = covid_df2.loc[ 'Russia' , : ]
+x_canada = covid_df2.loc[ 'Canada' , : ]
+x_vietnam = covid_df2.loc[ 'Vietnam' , : ]
+x_yemen = covid_df2.loc[ 'Yemen' , : ]
+x_mexico = covid_df2.loc[ 'Mexico' , : ]
 
-x_vietnam = df_vietnam.iloc[0:1, 6:].values
-x_vietnam= x_vietnam[0]
+x_pais_seleccionado = covid_df2.loc[ option , : ]
 
-x_yemen = df_yemen.iloc[0:1, 6:].values
-x_yemen= x_yemen[0]
 
-x_mexico = df_mexico.iloc[0:1, 6:].values
-x_mexico= x_mexico[0]
+#df_rusia =covid_df2[covid_df2['Country/Region'].str.contains("Russia", case=True)]
+#df_canada =covid_df2[covid_df2['Country/Region'].str.contains("Canada", case=True)]
+#df_vietnam =covid_df2[covid_df2['Country/Region'].str.contains("Vietnam", case=True)]
+#df_yemen =covid_df2[covid_df2['Country/Region'].str.contains("Yemen", case=True)]
+#df_mexico =covid_df2[covid_df2['Country/Region'].str.contains("Mexico", case=True)]
 
-x_pais_seleccionado = df_pais_seleccionado.iloc[0:1, 6:].values
-x_pais_seleccionado= x_pais_seleccionado[0]
+#df_pais_seleccionado=covid_df2[covid_df2['Country/Region'].str.contains(option, case=True)]
+
+#x_arg = df_arg.iloc[0:1, 6:].values
+x_arg= x_arg[2:]
+
+#x_rusia = df_rusia.iloc[0:1, 6:].values
+x_rusia= x_rusia[2:]
+
+#x_canada = df_canada.iloc[0:1, 6:].values
+x_canada= x_canada[2:]
+
+#x_vietnam = df_vietnam.iloc[0:1, 6:].values
+x_vietnam= x_vietnam[2:]
+
+#x_yemen = df_yemen.iloc[0:1, 6:].values
+x_yemen= x_yemen[2:]
+
+#x_mexico = df_mexico.iloc[0:1, 6:].values
+x_mexico= x_mexico[2:]
+
+#x_pais_seleccionado = df_pais_seleccionado.iloc[0:1, 6:].values
+x_pais_seleccionado= x_pais_seleccionado[2:]
 
 
 paises_argentina_con_seleccionado= np.vstack((x_arg,x_pais_seleccionado))
@@ -63,16 +78,17 @@ data = pd.DataFrame({
     'Paises': ['Argentina', option],
     'Casos Max Confirmados Por Paises ': casos_max_argentina_con_seleccionado
 ,
-})
+}) 
 
 #st.write(x_pais_seleccionado)
 
+
+
 df = pd.DataFrame({
-  'Argentina': x_arg,
-  option: x_pais_seleccionado
-})
-
-
+  'Argentina': np.array(x_arg),
+  option: np.array(x_pais_seleccionado),
+},index=np.linspace(0,len(x_arg),len(x_arg)))
+#el index no hace falta
 st.line_chart(df)
 
 
@@ -161,7 +177,6 @@ if len(COUNTRIES_SELECTED)>=2:
         'Casos Max Confirmados Por Paises ': casos_max_por_paises
     ,
     })
-    print(casos_max_por_paises)
 
     st.write(data)
     st.write(alt.Chart(data).mark_bar().encode(
@@ -171,8 +186,10 @@ if len(COUNTRIES_SELECTED)>=2:
 
 
 
-    st.write("Creado por Pértile Franco Giuliano")
-    st.markdown("https://github.com/francofgp/streamlit-Casos-Covid-19-Argentina")
-
-
  
+
+
+
+st.write("Creado por Pértile Franco Giuliano")
+st.markdown("https://github.com/francofgp/streamlit-Casos-Covid-19-Argentina")
+
