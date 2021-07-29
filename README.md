@@ -16,3 +16,36 @@ La aplicación fue construida con python con la ayuda de las siguientes librerí
 -   altair
 -   pandas
 -   plotly
+
+## Ejecución
+**Python 3.7 requerido**
+
+Usando [pip](https://pypi.org/project/pip/) para instalar los requerimientos.
+
+```bash
+pip install -r requirements.txt
+```
+
+Luego para ejecutar la aplicación:
+
+```bash
+streamlit run app.py
+```
+
+
+## Imágenes:
+
+#### Selección de paises para comparar con Argentina
+![Imgur](https://i.imgur.com/2yYRC3U.png)
+
+#### Gráficos
+![Imgur](https://i.imgur.com/2riqj7e.png)
+
+#### Elige tus propios paises para comparar
+![Imgur](https://i.imgur.com/aGtFsqA.png)
+
+#### Comparaciones
+![Imgur](https://i.imgur.com/hMqwLJe.png)
+
+#### Más gráficos
+![Imgur](https://i.imgur.com/aGtFsqA.png)
